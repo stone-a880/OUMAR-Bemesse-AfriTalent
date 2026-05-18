@@ -1,0 +1,380 @@
+/* ===============================================================
+   AfriTalent – style.css
+   Design System complet : variables, typographie, composants,
+   Bento Grid, animations, responsive, dark mode
+   =============================================================== */
+
+/* --- Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+/* ---------------------------------------------------------------
+   1. CSS Variables (6+ custom properties)
+   --------------------------------------------------------------- */
+:root {
+  /* Palette – 5 couleurs principales */
+  --primary: #2563eb;
+  --secondary: #0f172a;
+  --accent: #06b6d4;
+  --light: #f8fafc;
+  --dark: #020617;
+  /* Surfaces & texte */
+  --surface: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+  /* Design tokens */
+  --radius: 16px;
+  --radius-sm: 8px;
+  --transition: all 0.35s ease;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 32px rgba(37, 99, 235, 0.18);
+  /* Typographie */
+  --font-title: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* ---------------------------------------------------------------
+   2. Dark Mode (toggle via JS – data-theme="dark" sur <html>)
+   --------------------------------------------------------------- */
+[data-theme="dark"] {
+  --light: #0f172a;
+  --surface: #1e293b;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+[data-theme="dark"] .navbar { background: #0f172a !important; }
+[data-theme="dark"] .navbar .nav-link,
+[data-theme="dark"] .navbar .navbar-brand { color: #e2e8f0 !important; }
+[data-theme="dark"] .card,
+[data-theme="dark"] .grid-item { background: var(--surface); color: var(--text); }
+[data-theme="dark"] footer { background: #020617 !important; }
+[data-theme="dark"] .bg-light { background: var(--surface) !important; }
+[data-theme="dark"] body { background: var(--light); color: var(--text); }
+[data-theme="dark"] h1,[data-theme="dark"] h2,[data-theme="dark"] h3,
+[data-theme="dark"] h4,[data-theme="dark"] h5 { color: #e2e8f0; }
+[data-theme="dark"] .text-muted { color: var(--muted) !important; }
+[data-theme="dark"] .pricing-card { background: var(--surface); border-color: #334155; }
+[data-theme="dark"] .pricing-card.popular { border-color: var(--primary); }
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select { background: #1e293b; color: #e2e8f0; border-color: #334155; }
+[data-theme="dark"] .accordion-button { background: #1e293b; color: #e2e8f0; }
+[data-theme="dark"] .accordion-body { background: var(--surface); color: var(--text); }
+
+/* ---------------------------------------------------------------
+   3. Reset & Base
+   --------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--light);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ---------------------------------------------------------------
+   4. Typographie
+   --------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 700;
+  color: var(--secondary);
+  line-height: 1.2;
+}
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); margin-bottom: 1rem; }
+a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+a:hover { opacity: 0.85; }
+.section-title { text-align: center; margin-bottom: 3rem; }
+.section-title h2 { font-weight: 800; }
+.section-title p { color: var(--muted); max-width: 600px; margin: 0.5rem auto 0; }
+
+/* ---------------------------------------------------------------
+   5. Navbar
+   --------------------------------------------------------------- */
+.navbar {
+  background: rgba(255,255,255,0.95) !important;
+  backdrop-filter: blur(12px);
+  transition: var(--transition);
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.navbar.scrolled {
+  padding: 0.4rem 0;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+}
+.navbar-brand {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--primary) !important;
+}
+.navbar .nav-link {
+  font-weight: 500;
+  color: var(--text) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: var(--primary) !important;
+  background: rgba(37, 99, 235, 0.08);
+}
+/* Dark mode toggle switch in navbar */
+.dark-toggle { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+.dark-toggle input { display: none; }
+.toggle-track {
+  width: 44px; height: 24px;
+  background: #cbd5e1; border-radius: 12px;
+  position: relative; transition: var(--transition);
+}
+.toggle-track::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 20px; height: 20px; background: #fff;
+  border-radius: 50%; transition: var(--transition);
+}
+.dark-toggle input:checked + .toggle-track { background: var(--primary); }
+.dark-toggle input:checked + .toggle-track::after { transform: translateX(20px); }
+
+/* ---------------------------------------------------------------
+   6. Boutons
+   --------------------------------------------------------------- */
+.btn-primary {
+  background: var(--primary); border: none;
+  border-radius: var(--radius-sm); font-family: var(--font-title);
+  font-weight: 600; padding: 0.65rem 1.8rem;
+  transition: var(--transition);
+}
+.btn-primary:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+.btn-outline-primary { border-radius: var(--radius-sm); font-weight: 600; }
+.btn-cta {
+  background: var(--primary); color: #fff; border: none;
+  padding: 0.9rem 2.5rem; border-radius: var(--radius);
+  font-family: var(--font-title); font-weight: 700; font-size: 1.1rem;
+  transition: var(--transition);
+}
+.btn-cta:hover { background: #1d4ed8; transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+/* ---------------------------------------------------------------
+   7. Hero Section
+   --------------------------------------------------------------- */
+#hero { min-height: 85vh; display: flex; align-items: center; padding: 6rem 0 4rem; }
+#hero h1 { font-weight: 800; margin-bottom: 1rem; }
+#hero .lead { font-size: 1.2rem; color: var(--muted); margin-bottom: 2rem; }
+#hero img { max-width: 100%; border-radius: var(--radius); }
+
+/* ---------------------------------------------------------------
+   8. Stats Counters
+   --------------------------------------------------------------- */
+#stats {
+  background: var(--surface); border-radius: var(--radius);
+  padding: 2.5rem 1rem; box-shadow: var(--shadow);
+  margin: -2rem auto 3rem; position: relative; z-index: 2;
+}
+#stats h3 { font-size: 2.5rem; font-weight: 800; color: var(--primary); }
+#stats p { color: var(--muted); font-weight: 500; margin: 0; }
+
+/* ---------------------------------------------------------------
+   9. Bento Grid – « Comment ça marche »
+   --------------------------------------------------------------- */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(160px, auto);
+  gap: 1.25rem;
+}
+.grid-item {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 2rem;
+  display: flex; flex-direction: column; justify-content: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.grid-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+.step-number {
+  font-size: 2.5rem; font-weight: 800;
+  color: var(--primary); margin-bottom: 0.5rem;
+  line-height: 1;
+}
+.grid-item h4 { font-size: 1.1rem; margin-bottom: 0.4rem; }
+.grid-item p { color: var(--muted); font-size: 0.95rem; margin: 0; }
+
+/* ---------------------------------------------------------------
+   10. Service Cards
+   --------------------------------------------------------------- */
+.service-card {
+  background: var(--surface); border: 1px solid rgba(0,0,0,0.05);
+  border-radius: var(--radius); transition: var(--transition);
+  cursor: pointer;
+}
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--primary);
+}
+.service-card:hover .service-icon { color: var(--primary); transform: scale(1.15); }
+.service-icon { font-size: 2.5rem; color: var(--accent); transition: var(--transition); }
+
+/* ---------------------------------------------------------------
+   11. Testimonials Carousel
+   --------------------------------------------------------------- */
+#testimonials { background: var(--surface); border-radius: var(--radius); padding: 3rem 1rem; }
+#testimonials .carousel-item { padding: 2rem; min-height: 220px; }
+#testimonials img { border: 3px solid var(--primary); }
+#testimonials .lead { font-style: italic; max-width: 600px; margin: 0 auto; }
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-color: var(--primary); border-radius: 50%; padding: 1.2rem;
+}
+
+/* ---------------------------------------------------------------
+   12. CTA Banner
+   --------------------------------------------------------------- */
+#cta-banner {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: var(--radius); padding: 4rem 2rem;
+  text-align: center; color: #fff; margin: 3rem 0;
+}
+#cta-banner h2 { color: #fff; font-weight: 800; }
+#cta-banner .btn-cta { background: #fff; color: var(--primary); }
+#cta-banner .btn-cta:hover { background: var(--secondary); color: #fff; }
+
+/* ---------------------------------------------------------------
+   13. Pricing Cards
+   --------------------------------------------------------------- */
+.pricing-card {
+  background: var(--surface); border: 2px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius); padding: 2.5rem 2rem;
+  text-align: center; transition: var(--transition);
+}
+.pricing-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+.pricing-card.popular {
+  border-color: var(--primary); position: relative;
+  transform: scale(1.05); box-shadow: var(--shadow-hover);
+}
+.pricing-card.popular .badge-popular {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--primary); color: #fff; padding: 0.3rem 1.2rem;
+  border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+}
+.pricing-card .price { font-size: 2.5rem; font-weight: 800; color: var(--primary); }
+.pricing-card .price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+.pricing-card ul { list-style: none; padding: 0; text-align: left; }
+.pricing-card ul li { padding: 0.5rem 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.pricing-card ul li i { margin-right: 0.5rem; }
+.check-yes { color: #22c55e; }
+.check-no { color: #ef4444; }
+
+/* ---------------------------------------------------------------
+   14. Team Cards
+   --------------------------------------------------------------- */
+.team-card {
+  background: var(--surface); border-radius: var(--radius);
+  padding: 2rem; text-align: center;
+  box-shadow: var(--shadow); transition: var(--transition);
+}
+.team-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+.team-card img { width: 100px; height: 100px; object-fit: cover; border: 3px solid var(--primary); }
+.team-card .social-links a { margin: 0 0.4rem; font-size: 1.1rem; }
+
+/* ---------------------------------------------------------------
+   15. Values
+   --------------------------------------------------------------- */
+.value-card {
+  text-align: center; padding: 2rem;
+  background: var(--surface); border-radius: var(--radius);
+  box-shadow: var(--shadow); transition: var(--transition);
+}
+.value-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+.value-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+
+/* ---------------------------------------------------------------
+   16. Contact
+   --------------------------------------------------------------- */
+.contact-info i { color: var(--primary); font-size: 1.3rem; margin-right: 0.5rem; }
+.contact-info p { margin-bottom: 1rem; }
+#form-success {
+  background: #dcfce7; color: #166534; padding: 1rem;
+  border-radius: var(--radius-sm); font-weight: 600;
+}
+
+/* ---------------------------------------------------------------
+   17. Footer – 4 colonnes
+   --------------------------------------------------------------- */
+footer {
+  background: var(--secondary) !important;
+  color: #cbd5e1; padding: 3rem 0 1.5rem;
+}
+footer h5 { color: #fff; font-family: var(--font-title); font-weight: 700; margin-bottom: 1rem; }
+footer a { color: #94a3b8; transition: var(--transition); }
+footer a:hover { color: #fff; }
+footer ul { list-style: none; padding: 0; }
+footer ul li { margin-bottom: 0.5rem; }
+.footer-social a { font-size: 1.3rem; margin-right: 0.8rem; }
+.footer-bottom { border-top: 1px solid #334155; padding-top: 1rem; margin-top: 2rem; text-align: center; }
+
+/* ---------------------------------------------------------------
+   18. Back-to-top
+   --------------------------------------------------------------- */
+#backToTop {
+  position: fixed; right: 1.5rem; bottom: 1.5rem;
+  display: none; background: var(--primary); color: #fff;
+  border: none; border-radius: 50%; width: 48px; height: 48px;
+  align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1.4rem;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  transition: var(--transition); z-index: 999;
+}
+#backToTop.show { display: flex; }
+#backToTop:hover { transform: translateY(-3px); }
+
+/* ---------------------------------------------------------------
+   19. Fade-in animation (JS ajoute .fade-in)
+   --------------------------------------------------------------- */
+section { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+section.fade-in { opacity: 1; transform: translateY(0); }
+
+/* ---------------------------------------------------------------
+   20. Page header (pages internes)
+   --------------------------------------------------------------- */
+.page-header {
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  color: #fff; padding: 5rem 0 3rem; text-align: center;
+  margin-bottom: 3rem; border-radius: 0 0 var(--radius) var(--radius);
+}
+.page-header h1 { color: #fff; font-weight: 800; }
+.page-header p { color: rgba(255,255,255,0.8); }
+
+/* ---------------------------------------------------------------
+   21. Responsive – mobile & tablette
+   --------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .bento-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  #hero { min-height: auto; padding: 4rem 0 2rem; text-align: center; }
+  .bento-grid { grid-template-columns: 1fr; }
+  .pricing-card.popular { transform: scale(1); }
+  #stats { margin: 0 auto 2rem; }
+  .navbar .nav-link { padding: 0.5rem 0 !important; }
+}
+@media (max-width: 375px) {
+  h1 { font-size: 1.8rem; }
+  .btn-cta { padding: 0.7rem 1.5rem; font-size: 1rem; }
+}
+
+.freelance-avatar {
+  width: 90px;
+  height: 90px;
+  object-fit: cover; /* Recadre proprement les images de tailles différentes sans distorsion */
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+/* Optionnel : un petit effet au survol de la carte */
+.service-card:hover .freelance-avatar {
+  transform: scale(1.08);
+}
