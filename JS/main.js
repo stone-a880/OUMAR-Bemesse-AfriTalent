@@ -245,6 +245,27 @@ if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
 }
 
+
+const words = ["talents", "freelances", "experts", "développeurs"];
+let wordIndex = 0, charIndex = 0, deleting = false;
+const el = document.getElementById("typewriter");
+
+function type() {
+  const word = words[wordIndex];
+  el.textContent = deleting
+    ? word.slice(0, --charIndex)
+    : word.slice(0, ++charIndex);
+
+  if (!deleting && charIndex === word.length)
+    return setTimeout(() => { deleting = true; type(); }, 1500);
+  if (deleting && charIndex === 0) {
+    deleting = false;
+    wordIndex = (wordIndex + 1) % words.length;
+  }
+  setTimeout(type, deleting ? 60 : 100);
+}
+type();
+
 // ================================================================
 // Fin de main.js
 // ================================================================

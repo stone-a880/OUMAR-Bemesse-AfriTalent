@@ -378,3 +378,14 @@ section.fade-in { opacity: 1; transform: translateY(0); }
 .service-card:hover .freelance-avatar {
   transform: scale(1.08);
 }
+
+.btn-whatsapp {
+  display: inline-flex !important;
+  background: #25D366 !important;
+  color: #fff !important;
+}
+
+.btn-whatsapp:hover {
+  background: #1ebe5d;
+  color: #fff;
+}
